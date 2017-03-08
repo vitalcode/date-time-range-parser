@@ -2,7 +2,18 @@ package uk.vitalcode.dateparser
 
 import java.time.LocalDateTime
 
-case class DateTimeInterval(from: LocalDateTime, to: LocalDateTime)
+case class DateTimeInterval(from: LocalDateTime, to: Option[LocalDateTime]) {
+  def to(year: Int, month: Int, day: Int, hours: Int, minutes: Int): DateTimeInterval = copy(
+    to = Some(LocalDateTime.of(year, month, day, hours, minutes, 0))
+  )
+}
+
+object DateTimeInterval {
+  def from(year: Int, month: Int, day: Int, hours: Int, minutes: Int): DateTimeInterval = new DateTimeInterval(
+    from = LocalDateTime.of(year, month, day, hours, minutes, 0),
+    to = None
+  )
+}
 
 case object Analyser {
 
@@ -17,7 +28,7 @@ case object Analyser {
     times.map(time => {
       DateTimeInterval(
         from = LocalDateTime.of(date.year, date.month, date.day, time.from, 0, 0),
-        to = LocalDateTime.of(date.year, date.month, date.day, time.to, 0, 0)
+        to = Some(LocalDateTime.of(date.year, date.month, date.day, time.to, 0, 0))
       )
     })
   }

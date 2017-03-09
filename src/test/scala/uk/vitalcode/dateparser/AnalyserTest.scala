@@ -11,7 +11,8 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
       List(Date(12, 2, 2017), TimeRange(10, 11), TimeRange(14, 15)) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0),
         DateTimeInterval.from(2017, 2, 12, 14, 0).to(2017, 2, 12, 15, 0)
-      )
+      ),
+      List(Date(12, 2, 2017)) -> List(DateTimeInterval.from(2017, 2, 12, 0, 0))
     ).foreach(assert)
   }
 

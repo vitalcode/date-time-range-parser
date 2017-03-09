@@ -12,6 +12,8 @@ final case class Year(value: Int, index: Int = 0) extends DateToken
 
 final case class Date(day: Int, month: Int, year: Int, index: Int = 0) extends DateToken
 
+final case class DateRange(from: Date, to: Date, index: Int = 0) extends DateToken
+
 final case class Time(value: Int, index: Int = 0) extends DateToken
 
 final case class Range(index: Int = 0) extends DateToken

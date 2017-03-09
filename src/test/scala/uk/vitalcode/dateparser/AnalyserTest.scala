@@ -36,6 +36,19 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
     }
   }
 
+  "Single date range token" - {
+    "no either time nor time range token" in {
+      assert(
+        (DateRange(Date(12, 2, 2017), Date(15, 2, 2017)) :: Nil) -> List(
+          DateTimeInterval.from(2017, 2, 12, 0, 0),
+          DateTimeInterval.from(2017, 2, 13, 0, 0),
+          DateTimeInterval.from(2017, 2, 14, 0, 0),
+          DateTimeInterval.from(2017, 2, 15, 0, 0)
+        )
+      )
+    }
+  }
+
   private def assert(testExpectations: (List[DateToken], List[DateTimeInterval])) = {
     analyse(indexTokenList(testExpectations._1)) shouldBe testExpectations._2
   }

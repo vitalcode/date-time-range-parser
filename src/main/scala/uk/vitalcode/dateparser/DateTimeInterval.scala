@@ -1,6 +1,6 @@
 package uk.vitalcode.dateparser
 
-import java.time.LocalDateTime
+import java.time.{DayOfWeek, LocalDate, LocalDateTime, LocalTime}
 
 case class DateTimeInterval(from: LocalDateTime, to: Option[LocalDateTime]) {
   def to(year: Int, month: Int, day: Int, hours: Int, minutes: Int): DateTimeInterval = copy(

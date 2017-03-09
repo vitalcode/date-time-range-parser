@@ -24,6 +24,17 @@ class DateTimeIntervalTest extends FreeSpec with ShouldMatchers {
           DateTimeInterval.from(2017, 5, 6, 14, 0)
         ))
       }
+      "single time range" in {
+        assert(List(Day(6), Month(5), Year(2017), Time(12), Range(), Time(14)) -> List(
+          DateTimeInterval.from(2017, 5, 6, 12, 0).to(2017, 5, 6, 14, 0)
+        ))
+      }
+      "multiple time range" in {
+        assert(List(Day(6), Month(5), Year(2017), Time(12), Range(), Time(14), Time(18), Range(), Time(20)) -> List(
+          DateTimeInterval.from(2017, 5, 6, 12, 0).to(2017, 5, 6, 14, 0),
+          DateTimeInterval.from(2017, 5, 6, 18, 0).to(2017, 5, 6, 20, 0)
+        ))
+      }
     }
 
     "single date (month, day, year tokens)" in {

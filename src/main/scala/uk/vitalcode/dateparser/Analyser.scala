@@ -25,7 +25,7 @@ case object Analyser {
     val fromDate = LocalDate.of(from.year, from.month, from.day)
     val toDate = LocalDate.of(to.year, to.month, to.day)
 
-    DateTimeUtils.datesInRange(fromDate, toDate, Nil)
+    DateTimeUtils.datesInRange(fromDate, toDate)
       .map(localDate => DateTimeInterval(LocalDateTime.of(localDate, LocalTime.of(0, 0)), None))
   }
 
@@ -36,7 +36,7 @@ case object Analyser {
     val toDate = LocalDate.of(to.year, to.month, to.day)
 
     for {
-      localDate <- DateTimeUtils.datesInRange(fromDate, toDate, Nil)
+      localDate <- DateTimeUtils.datesInRange(fromDate, toDate)
       time <- times
     } yield DateTimeInterval(LocalDateTime.of(localDate, LocalTime.of(time.value, 0)), None)
   }
@@ -48,7 +48,7 @@ case object Analyser {
     val toDate = LocalDate.of(to.year, to.month, to.day)
 
     for {
-      localDate <- DateTimeUtils.datesInRange(fromDate, toDate, Nil)
+      localDate <- DateTimeUtils.datesInRange(fromDate, toDate)
       timeRange <- timeRanges
     } yield DateTimeInterval(
       LocalDateTime.of(localDate, LocalTime.of(timeRange.from, 0)),

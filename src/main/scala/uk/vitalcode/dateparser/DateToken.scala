@@ -1,5 +1,7 @@
 package uk.vitalcode.dateparser
 
+import java.time.DayOfWeek
+
 trait DateToken {
   val index: Int
 }
@@ -19,3 +21,5 @@ final case class Time(value: Int, index: Int = 0) extends DateToken
 final case class Range(index: Int = 0) extends DateToken
 
 final case class TimeRange(from: Int, to: Int, index: Int = 0) extends DateToken
+
+final case class WeekDay(value: DayOfWeek, index: Int = 0) extends DateToken

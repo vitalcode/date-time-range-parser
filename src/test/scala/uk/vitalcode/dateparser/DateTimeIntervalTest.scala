@@ -42,6 +42,14 @@ class DateTimeIntervalTest extends FreeSpec with ShouldMatchers {
         DateTimeInterval.from(2017, 9, 10, 12, 0)
       ))
     }
+
+    "date range [month, day, year] - [day, month, year]" in {
+      assert((Month(9) :: Day(10) :: Year(2017) :: Range() :: Day(12) :: Month(9) :: Year(2017) :: Nil) -> List(
+        DateTimeInterval.from(2017, 9, 10, 0, 0),
+        DateTimeInterval.from(2017, 9, 11, 0, 0),
+        DateTimeInterval.from(2017, 9, 12, 0, 0)
+      ))
+    }
   }
 
   private def assert(testExpectations: (List[DateToken], List[DateTimeInterval])) = {

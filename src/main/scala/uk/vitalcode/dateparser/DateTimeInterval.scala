@@ -16,7 +16,13 @@ object DateTimeInterval {
 
   def of(dateTokens: List[DateToken]): List[DateTimeInterval] = {
     val indexedTokens = DateTokenAggregator.indexTokenList(dateTokens)
-    val aggregatedTokens = DateTokenAggregator.aggregate(indexedTokens)
+    val aggregatedTokens = aggregateTokens(indexedTokens)
     Analyser.analyse(aggregatedTokens)
+  }
+
+  private def aggregateTokens(dateTokens: List[DateToken]): List[DateToken] = {
+    val aggregatedTokens = DateTokenAggregator.aggregate(dateTokens)
+    if (aggregatedTokens == dateTokens) aggregatedTokens
+    else aggregateTokens(aggregatedTokens)
   }
 }

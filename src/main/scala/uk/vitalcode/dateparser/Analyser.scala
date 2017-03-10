@@ -6,7 +6,9 @@ case object Analyser {
 
   def analyse(tokens: List[DateToken]): List[DateTimeInterval] = {
     (dates(tokens), dateRanges(tokens), times(tokens), timeRanges(tokens)) match {
-      case (_ , dateRange :: Nil, Nil, Nil) => analyseDateRagneNoTimePatterns(dateRange)
+      case (_ , dateRange :: Nil, Nil, Nil) => analyseDateRangeNoTimePatterns(dateRange)
+      case (_ , dateRange :: Nil, times, Nil) => analyseDateRangeTimePatterns(dateRange, times)
+      case (_ , dateRange :: Nil, _, timeRanges: List[TimeRange]) => analyseDateRangeTimeTimeRangesPatterns(dateRange, timeRanges)
       case (date :: Nil, _, Nil, Nil) => analyseSingleNoTimePatterns(date)
       case (date :: Nil, _, times: List[Time], Nil) => analyseSingleDateTimePatterns(date, times)
       case (date :: Nil, _, _, timeRanges: List[TimeRange]) => analyseSingleDateTimeRangesPatterns(date, timeRanges)
@@ -17,7 +19,7 @@ case object Analyser {
   private def analyseSingleNoTimePatterns(date: Date): List[DateTimeInterval] =
     List(DateTimeInterval.from(date.year, date.month, date.day, 0, 0))
 
-  private def analyseDateRagneNoTimePatterns(dateRange: DateRange): List[DateTimeInterval] = {
+  private def analyseDateRangeNoTimePatterns(dateRange: DateRange): List[DateTimeInterval] = {
     val from = dateRange.from
     val to = dateRange.to
     val fromDate = LocalDate.of(from.year, from.month, from.day)
@@ -25,6 +27,33 @@ case object Analyser {
 
     DateTimeUtils.datesInRange(fromDate, toDate, Nil)
       .map(localDate => DateTimeInterval(LocalDateTime.of(localDate, LocalTime.of(0, 0)), None))
+  }
+
+  private def analyseDateRangeTimePatterns(dateRange: DateRange, times: List[Time]): List[DateTimeInterval] = {
+    val from = dateRange.from
+    val to = dateRange.to
+    val fromDate = LocalDate.of(from.year, from.month, from.day)
+    val toDate = LocalDate.of(to.year, to.month, to.day)
+
+    for {
+      localDate <- DateTimeUtils.datesInRange(fromDate, toDate, Nil)
+      time <- times
+    } yield DateTimeInterval(LocalDateTime.of(localDate, LocalTime.of(time.value, 0)), None)
+  }
+
+  private def analyseDateRangeTimeTimeRangesPatterns(dateRange: DateRange, timeRanges: List[TimeRange]) = {
+    val from = dateRange.from
+    val to = dateRange.to
+    val fromDate = LocalDate.of(from.year, from.month, from.day)
+    val toDate = LocalDate.of(to.year, to.month, to.day)
+
+    for {
+      localDate <- DateTimeUtils.datesInRange(fromDate, toDate, Nil)
+      timeRange <- timeRanges
+    } yield DateTimeInterval(
+      LocalDateTime.of(localDate, LocalTime.of(timeRange.from, 0)),
+      Some(LocalDateTime.of(localDate, LocalTime.of(timeRange.to, 0)))
+    )
   }
 
   private def analyseSingleDateTimeRangesPatterns(date: Date, timeRanges: List[TimeRange]): List[DateTimeInterval] = {

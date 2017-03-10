@@ -12,6 +12,7 @@ object DateTokenAggregator {
       case (token: Time, index) => token.copy(index = index)
       case (token: Range, index) => token.copy(index = index)
       case (token: TimeRange, index) => token.copy(index = index)
+      case (token: WeekDay, index) => token.copy(index = index)
     }
   }
 

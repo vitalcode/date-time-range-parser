@@ -2,9 +2,12 @@ package uk.vitalcode.dateparser
 
 import java.time.{DayOfWeek, LocalDate, LocalDateTime, LocalTime}
 
+import uk.vitalcode.dateparser.DateTimeInterval.defaultTime
+import uk.vitalcode.dateparser.token._
+
 case object Analyser {
 
-  def analyse(tokens: List[DateToken]): List[DateTimeInterval] = {
+  def analyse(tokens: List[Token]): List[DateTimeInterval] = {
     (dates(tokens), dateRanges(tokens), weekDays(tokens), times(tokens), timeRanges(tokens)) match {
       case (_ , dateRange :: Nil, weekDays, Nil, Nil) => analyseDateRangeNoTimePatterns(dateRange, weekDays)
       case (_ , dateRange :: Nil, weekDays, times, Nil) => analyseDateRangeTimePatterns(dateRange, weekDays, times)
@@ -17,75 +20,60 @@ case object Analyser {
   }
 
   private def analyseSingleNoTimePatterns(date: Date): List[DateTimeInterval] =
-    List(DateTimeInterval.from(date.year, date.month, date.day, 0, 0))
+    List(DateTimeInterval.from(date.value, defaultTime))
 
   private def analyseDateRangeNoTimePatterns(dateRange: DateRange, weekDays: Set[DayOfWeek]): List[DateTimeInterval] = {
-    val from = dateRange.from
-    val to = dateRange.to
-    val fromDate = LocalDate.of(from.year, from.month, from.day)
-    val toDate = LocalDate.of(to.year, to.month, to.day)
-
-    DateTimeUtils.datesInRange(fromDate, toDate, weekDays)
+    DateTimeUtils.datesInRange(dateRange.from, dateRange.to, weekDays)
       .map(localDate => DateTimeInterval(LocalDateTime.of(localDate, LocalTime.of(0, 0)), None))
   }
 
   private def analyseDateRangeTimePatterns(dateRange: DateRange, weekDays: Set[DayOfWeek], times: List[Time]): List[DateTimeInterval] = {
-    val from = dateRange.from
-    val to = dateRange.to
-    val fromDate = LocalDate.of(from.year, from.month, from.day)
-    val toDate = LocalDate.of(to.year, to.month, to.day)
-
     for {
-      localDate <- DateTimeUtils.datesInRange(fromDate, toDate, weekDays)
+      localDate <- DateTimeUtils.datesInRange(dateRange.from, dateRange.to, weekDays)
       time <- times
-    } yield DateTimeInterval(LocalDateTime.of(localDate, LocalTime.of(time.value, 0)), None)
+    } yield DateTimeInterval(LocalDateTime.of(localDate, time.value), None)
   }
 
   private def analyseDateRangeTimeTimeRangesPatterns(dateRange: DateRange, weekDays: Set[DayOfWeek], timeRanges: List[TimeRange]) = {
-    val from = dateRange.from
-    val to = dateRange.to
-    val fromDate = LocalDate.of(from.year, from.month, from.day)
-    val toDate = LocalDate.of(to.year, to.month, to.day)
-
     for {
-      localDate <- DateTimeUtils.datesInRange(fromDate, toDate, weekDays)
+      localDate <- DateTimeUtils.datesInRange(dateRange.from, dateRange.to, weekDays)
       timeRange <- timeRanges
     } yield DateTimeInterval(
-      LocalDateTime.of(localDate, LocalTime.of(timeRange.from, 0)),
-      Some(LocalDateTime.of(localDate, LocalTime.of(timeRange.to, 0)))
+      LocalDateTime.of(localDate, timeRange.from),
+      Some(LocalDateTime.of(localDate, timeRange.to))
     )
   }
 
   private def analyseSingleDateTimeRangesPatterns(date: Date, timeRanges: List[TimeRange]): List[DateTimeInterval] = {
     timeRanges.map(time => {
-      DateTimeInterval.from(date.year, date.month, date.day, time.from, 0)
-        .to(date.year, date.month, date.day, time.to, 0)
+      DateTimeInterval.from(date.value, time.from)
+        .to(date.value, time.to)
     })
   }
 
   private def analyseSingleDateTimePatterns(date: Date, times: List[Time]): List[DateTimeInterval] = {
     times.map(time => {
-      DateTimeInterval.from(date.year, date.month, date.day, time.value, 0)
+      DateTimeInterval.from(date.value, time.value)
     })
   }
 
-  private def dates(dateTokens: List[DateToken]) = dateTokens.collect {
+  private def dates(dateTokens: List[Token]) = dateTokens.collect {
     case d: Date => d
   }
 
-  private def dateRanges(dateTokens: List[DateToken]) = dateTokens.collect {
+  private def dateRanges(dateTokens: List[Token]) = dateTokens.collect {
     case t: DateRange => t
   }
 
-  private def times(dateTokens: List[DateToken]) = dateTokens.collect {
+  private def times(dateTokens: List[Token]) = dateTokens.collect {
     case t: Time => t
   }
 
-  private def timeRanges(dateTokens: List[DateToken]) = dateTokens.collect {
+  private def timeRanges(dateTokens: List[Token]) = dateTokens.collect {
     case t: TimeRange => t
   }
 
-  private def weekDays(dateTokens: List[DateToken]) = dateTokens.collect {
+  private def weekDays(dateTokens: List[Token]) = dateTokens.collect {
     case t: WeekDay => t.value
   }.toSet
 }

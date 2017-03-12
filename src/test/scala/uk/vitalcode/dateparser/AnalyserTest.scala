@@ -5,33 +5,34 @@ import java.time.DayOfWeek
 import org.scalatest._
 import uk.vitalcode.dateparser.Analyser.analyse
 import uk.vitalcode.dateparser.DateTokenAggregator.indexTokenList
+import uk.vitalcode.dateparser.token._
 
 class AnalyserTest extends FreeSpec with ShouldMatchers {
 
   "Single date token" - {
     "no either time nor time range token" in {
-      assert(List(Date(12, 2, 2017)) -> List(
-        DateTimeInterval.from(2017, 2, 12, 0, 0)
+      assert(List(Date(2017, 2, 12)) -> List(
+        DateTimeInterval.from(2017, 2, 12)
       ))
     }
     "single time token" in {
-      assert(List(Date(12, 2, 2017), Time(10)) -> List(
+      assert(List(Date(2017, 2, 12), Time(10, 0)) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0)
       ))
     }
     "multiple time tokens" in {
-      assert(List(Date(12, 2, 2017), Time(10), Time(14)) -> List(
+      assert(List(Date(2017, 2, 12), Time(10, 0), Time(14, 0)) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0),
         DateTimeInterval.from(2017, 2, 12, 14, 0)
       ))
     }
     "single time range token" in {
-      assert(List(Date(12, 2, 2017), TimeRange(10, 11)) -> List(
+      assert(List(Date(2017, 2, 12), TimeRange((10, 0) -> (11, 0))) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0)
       ))
     }
     "multiple time range token" in {
-      assert(List(Date(12, 2, 2017), TimeRange(10, 11), TimeRange(14, 15)) -> List(
+      assert(List(Date(2017, 2, 12), TimeRange((10, 0) -> (11, 0)), TimeRange((14, 0) -> (15, 0))) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0),
         DateTimeInterval.from(2017, 2, 12, 14, 0).to(2017, 2, 12, 15, 0)
       ))
@@ -42,7 +43,7 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
     "no weekday filter" - {
       "no either time nor time range token" in {
         assert(
-          (DateRange(Date(12, 2, 2017), Date(14, 2, 2017)) :: Nil) -> List(
+          (DateRange((2017, 2, 12) -> (2017, 2, 14)) :: Nil) -> List(
             DateTimeInterval.from(2017, 2, 12, 0, 0),
             DateTimeInterval.from(2017, 2, 13, 0, 0),
             DateTimeInterval.from(2017, 2, 14, 0, 0)
@@ -50,14 +51,14 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
         )
       }
       "single time token" in {
-        assert((DateRange(Date(12, 2, 2017), Date(14, 2, 2017)) :: Time(10) :: Nil) -> List(
+        assert((DateRange((2017, 2, 12) -> (2017, 2, 14)) :: Time(10, 0) :: Nil) -> List(
           DateTimeInterval.from(2017, 2, 12, 10, 0),
           DateTimeInterval.from(2017, 2, 13, 10, 0),
           DateTimeInterval.from(2017, 2, 14, 10, 0)
         ))
       }
       "multiple time tokens" in {
-        assert((DateRange(Date(12, 2, 2017), Date(14, 2, 2017)) :: Time(10) :: Time(14) :: Nil) -> List(
+        assert((DateRange((2017, 2, 12) -> (2017, 2, 14)) :: Time(10, 0) :: Time(14, 0) :: Nil) -> List(
           DateTimeInterval.from(2017, 2, 12, 10, 0),
           DateTimeInterval.from(2017, 2, 12, 14, 0),
           DateTimeInterval.from(2017, 2, 13, 10, 0),
@@ -67,14 +68,14 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
         ))
       }
       "single time range token" in {
-        assert((DateRange(Date(12, 2, 2017), Date(14, 2, 2017)) :: TimeRange(10, 11) :: Nil) -> List(
+        assert((DateRange((2017, 2, 12) -> (2017, 2, 14)) :: TimeRange((10, 0) -> (11, 0)) :: Nil) -> List(
           DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0),
           DateTimeInterval.from(2017, 2, 13, 10, 0).to(2017, 2, 13, 11, 0),
           DateTimeInterval.from(2017, 2, 14, 10, 0).to(2017, 2, 14, 11, 0)
         ))
       }
       "multiple time range token" in {
-        assert((DateRange(Date(12, 2, 2017), Date(14, 2, 2017)) :: TimeRange(10, 11) :: TimeRange(14, 15) :: Nil) -> List(
+        assert((DateRange((2017, 2, 12) -> (2017, 2, 14)) :: TimeRange((10, 0) -> (11, 0)) :: TimeRange((14, 0) -> (15, 0)) :: Nil) -> List(
           DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0),
           DateTimeInterval.from(2017, 2, 12, 14, 0).to(2017, 2, 12, 15, 0),
           DateTimeInterval.from(2017, 2, 13, 10, 0).to(2017, 2, 13, 11, 0),
@@ -87,7 +88,7 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
     "with weekday filter" - {
       "no either time nor time range token" in {
         assert(
-          (DateRange(Date(12, 2, 2017), Date(28, 2, 2017)) :: WeekDay(DayOfWeek.TUESDAY) :: WeekDay(DayOfWeek.FRIDAY) :: Nil) -> List(
+          (DateRange((2017, 2, 12) -> (2017, 2, 28)) :: WeekDay(DayOfWeek.TUESDAY) :: WeekDay(DayOfWeek.FRIDAY) :: Nil) -> List(
             DateTimeInterval.from(2017, 2, 14, 0, 0),
             DateTimeInterval.from(2017, 2, 17, 0, 0),
             DateTimeInterval.from(2017, 2, 21, 0, 0),
@@ -102,7 +103,7 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
   "Date range token with " - {
     "no either time nor time range token" in {
       assert(
-        (DateRange(Date(12, 2, 2017), Date(14, 2, 2017)) :: Nil) -> List(
+        (DateRange((2017, 2, 12) -> (2017, 2, 14)) :: Nil) -> List(
           DateTimeInterval.from(2017, 2, 12, 0, 0),
           DateTimeInterval.from(2017, 2, 13, 0, 0),
           DateTimeInterval.from(2017, 2, 14, 0, 0)
@@ -111,7 +112,7 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
     }
   }
 
-  private def assert(testExpectations: (List[DateToken], List[DateTimeInterval])) = {
+  private def assert(testExpectations: (List[Token], List[DateTimeInterval])) = {
     analyse(indexTokenList(testExpectations._1)) shouldBe testExpectations._2
   }
 }

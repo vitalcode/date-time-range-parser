@@ -39,5 +39,12 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
       case _ => false
     }
   })
+
+  implicit val timeTokenMatcher: TokenMatcher[Time] = CreateTokenMatcher[Time]("Time", (text, token) => {
+    Time.of(text, 0) match {
+      case Success(time) => time == token
+      case _ => false
+    }
+  })
 }
 

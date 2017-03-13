@@ -11,6 +11,8 @@ object Time extends TokenCompanion[Time] {
 
   def apply(hours: Int, minutes: Int): Time = Time(LocalTime.of(hours, minutes))
 
+  def apply(hours: Int, minutes: Int, seconds: Int): Time = Time(LocalTime.of(hours, minutes, seconds))
+
   private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(""
     + "[h.m[.s]a]"
     + "[h[:m][:s]a]"

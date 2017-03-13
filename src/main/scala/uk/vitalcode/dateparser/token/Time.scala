@@ -5,9 +5,9 @@ import java.time.format.DateTimeFormatter
 
 import scala.util.Try
 
-final case class Time(value: LocalTime, index: Int = 0) extends Token
+final case class Time(value: LocalTime, index: Int = 0) extends TokenLike
 
-object Time {
+object Time extends TokenCompanion[Time] {
 
   def apply(hours: Int, minutes: Int): Time = Time(LocalTime.of(hours, minutes))
 
@@ -25,7 +25,7 @@ object Time {
   private val timeRegEx =
   """((([0]?[1-9]|1[0-2])((:|\.)[0-5]?[0-9])?((:|\.)[0-5]?[0-9])?( )?(AM|am|aM|Am|PM|pm|pM|Pm))|(([0]?[0-9]|1[0-9]|2[0-3])(:|\.)[0-5]?[0-9]((:|\.)[0-5]?[0-9])?))""".r
 
-  def of(text: String, index: Int): Try[Time] = Try {
+  override def of(text: String, index: Int): Try[Time] = Try {
     timeRegEx.findFirstIn(text)
       .map(_.replaceAll("""\s*""", "").toUpperCase)
       .map(timeString => LocalTime.parse(timeString, timeFormatter))

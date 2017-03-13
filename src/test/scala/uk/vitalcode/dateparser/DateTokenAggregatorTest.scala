@@ -1,7 +1,7 @@
 package uk.vitalcode.dateparser
 
 import org.scalatest._
-import uk.vitalcode.dateparser.token.{Date, DateRange, Day, Month, Range, Token, Year}
+import uk.vitalcode.dateparser.token.{Date, DateRange, Day, Month, Range, TokenLike, Year}
 import uk.vitalcode.dateparser.DateTokenAggregator.{aggregate, indexTokenList}
 
 class DateTokenAggregatorTest extends FreeSpec with ShouldMatchers {
@@ -21,7 +21,7 @@ class DateTokenAggregatorTest extends FreeSpec with ShouldMatchers {
     assert((Date(2017, 6, 12) :: Range() :: Date(2017, 6, 18) :: Nil) -> (DateRange((2017, 6, 12) -> (2017, 6, 18), 0) :: Nil))
   }
 
-  private def assert(testExpectations: (List[Token], List[Token])) = {
+  private def assert(testExpectations: (List[TokenLike], List[TokenLike])) = {
     aggregate(indexTokenList(testExpectations._1)) shouldBe testExpectations._2
   }
 }

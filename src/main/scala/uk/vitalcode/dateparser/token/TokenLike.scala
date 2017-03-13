@@ -2,17 +2,21 @@ package uk.vitalcode.dateparser.token
 
 import java.time.{DayOfWeek, LocalDate, LocalTime}
 
-trait Token {
+import scala.util.Try
+
+trait TokenLike {
   val index: Int
 }
 
-final case class Month(value: Int, index: Int = 0) extends Token
+trait TokenCompanion[T] {
+  def of(text: String, index: Int): Try[T]
+}
 
-final case class Day(value: Int, index: Int = 0) extends Token
+final case class Month(value: Int, index: Int = 0) extends TokenLike
 
-final case class Year(value: Int, index: Int = 0) extends Token
+final case class Day(value: Int, index: Int = 0) extends TokenLike
 
-final case class Date(value: LocalDate, index: Int) extends Token
+final case class Date(value: LocalDate, index: Int) extends TokenLike
 
 object Date {
 
@@ -21,7 +25,7 @@ object Date {
   }
 }
 
-final case class DateRange(from: LocalDate, to: LocalDate, index: Int) extends Token
+final case class DateRange(from: LocalDate, to: LocalDate, index: Int) extends TokenLike
 
 object DateRange {
   def apply(range: ((Int, Int, Int), (Int, Int, Int)), index: Int = 0): DateRange = {
@@ -34,9 +38,9 @@ object DateRange {
   }
 }
 
-final case class Range(index: Int = 0) extends Token
+final case class Range(index: Int = 0) extends TokenLike
 
-final case class TimeRange(from: LocalTime, to: LocalTime, index: Int) extends Token
+final case class TimeRange(from: LocalTime, to: LocalTime, index: Int) extends TokenLike
 
 object TimeRange {
   def apply(range: ((Int, Int), (Int, Int)), index: Int = 0): TimeRange = {
@@ -49,4 +53,4 @@ object TimeRange {
   }
 }
 
-final case class WeekDay(value: DayOfWeek, index: Int = 0) extends Token
+final case class WeekDay(value: DayOfWeek, index: Int = 0) extends TokenLike

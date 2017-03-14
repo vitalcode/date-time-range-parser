@@ -25,8 +25,8 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
     }
   }
 
-  protected def beToken[Token](right: Option[Token] = None)(implicit tokenMatcher: TokenMatcher[Token]): Matcher[String] = {
-    tokenMatcher.beToken(right)
+  protected def beToken[Token](implicit tokenMatcher: TokenMatcher[Token]): Matcher[String] = {
+    tokenMatcher.beToken(None)
   }
 
   protected def beToken[Token](right: Token)(implicit tokenMatcher: TokenMatcher[Token]): Matcher[String] = {

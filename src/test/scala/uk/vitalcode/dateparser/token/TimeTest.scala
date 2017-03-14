@@ -58,9 +58,9 @@ class TimeTest extends TokenTest {
 
     "not result in TimeToken" in {
 
-      "November" shouldNot beToken[Time]()
-      "12" shouldNot beToken[Time]()
-      "Monday" shouldNot beToken[Time]()
+      "November" shouldNot beToken[Time]
+      "12" shouldNot beToken[Time]
+      "Monday" shouldNot beToken[Time]
     }
   }
 }

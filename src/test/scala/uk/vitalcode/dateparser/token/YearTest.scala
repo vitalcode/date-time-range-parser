@@ -11,7 +11,7 @@ class YearTest extends TokenTest {
 
       "2100" shouldNot beToken[Year](Year(2100))
       "1801" shouldNot beToken[Year](Year(1801))
-      "12" shouldNot beToken[Year](None)
+      "12" shouldNot beToken[Year]
     }
 
     "may contain other leading or trailing characters" in {
@@ -23,7 +23,7 @@ class YearTest extends TokenTest {
   }
 
   "parsing string that does not contain valid year value" in {
-    "November" shouldNot beToken[Year]()
-    "Monday" shouldNot beToken[Year]()
+    "November" shouldNot beToken[Year]
+    "Monday" shouldNot beToken[Year]
   }
 }

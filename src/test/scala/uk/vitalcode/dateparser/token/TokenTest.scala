@@ -12,13 +12,13 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
     def beToken(right: Option[Token]): Matcher[String]
   }
 
-  private def CreateTokenMatcher[Token](context: String, canParse: (String, Token) => Boolean) = new TokenMatcher[Token] {
+  protected def CreateTokenMatcher[Token](context: String, canParse: (String, Token) => Boolean) = new TokenMatcher[Token] {
 
     override def beToken(right: Option[Token]): Matcher[String] = new Matcher[String] {
       def apply(left: String): MatchResult = {
         MatchResult(
           right.exists(token => canParse(left, token)),
-          s"String [$left] does not result in $context token ${right.getOrElse("")}",
+          s"String [$left] does not result in ${if (right.isEmpty) context else "token"} ${right.getOrElse("token")}",
           s"String [$left] results in token ${right.getOrElse("")} but it must not"
         )
       }
@@ -43,6 +43,13 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
   implicit val timeTokenMatcher: TokenMatcher[Time] = CreateTokenMatcher[Time]("Time", (text, token) => {
     Time.of(text, 0) match {
       case Success(time) => time == token
+      case _ => false
+    }
+  })
+
+  implicit val monthTokenMatcher: TokenMatcher[Month] = CreateTokenMatcher[Month]("Month", (text, expectedToken) => {
+    Month.of(text, 0) match {
+      case Success(actualToken) => actualToken == expectedToken
       case _ => false
     }
   })

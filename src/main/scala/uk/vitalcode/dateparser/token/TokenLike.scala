@@ -12,8 +12,6 @@ trait TokenCompanion[T] {
   def of(text: String, index: Int): Try[T]
 }
 
-final case class Month(value: Int, index: Int = 0) extends TokenLike
-
 final case class Day(value: Int, index: Int = 0) extends TokenLike
 
 final case class Date(value: LocalDate, index: Int) extends TokenLike

@@ -3,7 +3,7 @@ package uk.vitalcode.dateparser.token
 import org.scalatest.matchers.{MatchResult, Matcher}
 import org.scalatest.{FreeSpec, _}
 
-import scala.util.Success
+import scala.util.{Success, Try}
 
 abstract class TokenTest extends FreeSpec with ShouldMatchers {
 
@@ -12,7 +12,14 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
     def beToken(right: Option[Token]): Matcher[String]
   }
 
-  protected def CreateTokenMatcher[Token](context: String, canParse: (String, Token) => Boolean) = new TokenMatcher[Token] {
+  protected def CreateTokenMatcher[Token](context: String, parse: String => Try[Token]) = new TokenMatcher[Token] {
+
+    private def canParse(text: String, token: Token): Boolean = {
+      parse(text) match {
+        case Success(year) => year == token
+        case _ => false
+      }
+    }
 
     override def beToken(right: Option[Token]): Matcher[String] = new Matcher[String] {
       def apply(left: String): MatchResult = {
@@ -33,25 +40,10 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
     tokenMatcher.beToken(Some(right))
   }
 
-  implicit val yearTokenMatcher: TokenMatcher[Year] = CreateTokenMatcher[Year]("Year", (text, token) => {
-    Year.of(text, 0) match {
-      case Success(year) => year == token
-      case _ => false
-    }
-  })
+  implicit val yearTokenMatcher: TokenMatcher[Year] = CreateTokenMatcher[Year]("Year", text => Year.of(text, 0))
 
-  implicit val timeTokenMatcher: TokenMatcher[Time] = CreateTokenMatcher[Time]("Time", (text, token) => {
-    Time.of(text, 0) match {
-      case Success(time) => time == token
-      case _ => false
-    }
-  })
+  implicit val timeTokenMatcher: TokenMatcher[Time] = CreateTokenMatcher[Time]("Time", text => Time.of(text, 0))
 
-  implicit val monthTokenMatcher: TokenMatcher[Month] = CreateTokenMatcher[Month]("Month", (text, expectedToken) => {
-    Month.of(text, 0) match {
-      case Success(actualToken) => actualToken == expectedToken
-      case _ => false
-    }
-  })
+  implicit val monthTokenMatcher: TokenMatcher[Month] = CreateTokenMatcher[Month]("Month", text => Month.of(text, 0))
 }
 

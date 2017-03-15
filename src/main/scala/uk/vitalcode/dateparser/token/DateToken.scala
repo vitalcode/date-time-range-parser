@@ -12,6 +12,15 @@ trait TokenCompanion[T] {
   def of(token: String, index: Int): Try[T]
 }
 
+final case class Date(value: LocalDate, index: Int) extends TokenLike
+
+object Date {
+
+  def apply(year: Int, month: Int, day: Int, index: Int = 0): Try[Date] = Try {
+    Date(LocalDate.of(year, month, day), index)
+  }
+}
+
 final case class DateRange(from: LocalDate, to: LocalDate, index: Int) extends TokenLike
 
 object DateRange {

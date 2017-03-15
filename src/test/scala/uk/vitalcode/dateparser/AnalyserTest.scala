@@ -7,32 +7,34 @@ import uk.vitalcode.dateparser.Analyser.analyse
 import uk.vitalcode.dateparser.DateTokenAggregator.indexTokenList
 import uk.vitalcode.dateparser.token._
 
+import scala.util.Try
+
 class AnalyserTest extends FreeSpec with ShouldMatchers {
 
   "Single date token" - {
     "no either time nor time range token" in {
-      assert(List(Date(2017, 2, 12)) -> List(
+      assert(List(Date(2017, 2, 12).get) -> List(
         DateTimeInterval.from(2017, 2, 12)
       ))
     }
     "single time token" in {
-      assert(List(Date(2017, 2, 12), Time(10, 0)) -> List(
+      assert(List(Date(2017, 2, 12).get, Time(10, 0)) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0)
       ))
     }
     "multiple time tokens" in {
-      assert(List(Date(2017, 2, 12), Time(10, 0), Time(14, 0)) -> List(
+      assert(List(Date(2017, 2, 12).get, Time(10, 0), Time(14, 0)) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0),
         DateTimeInterval.from(2017, 2, 12, 14, 0)
       ))
     }
     "single time range token" in {
-      assert(List(Date(2017, 2, 12), TimeRange((10, 0) -> (11, 0))) -> List(
+      assert(List(Date(2017, 2, 12).get, TimeRange((10, 0) -> (11, 0))) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0)
       ))
     }
     "multiple time range token" in {
-      assert(List(Date(2017, 2, 12), TimeRange((10, 0) -> (11, 0)), TimeRange((14, 0) -> (15, 0))) -> List(
+      assert(List(Date(2017, 2, 12).get, TimeRange((10, 0) -> (11, 0)), TimeRange((14, 0) -> (15, 0))) -> List(
         DateTimeInterval.from(2017, 2, 12, 10, 0).to(2017, 2, 12, 11, 0),
         DateTimeInterval.from(2017, 2, 12, 14, 0).to(2017, 2, 12, 15, 0)
       ))

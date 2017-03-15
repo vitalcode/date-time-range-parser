@@ -4,14 +4,14 @@ import java.time.DayOfWeek
 
 class WeekDayTest extends TokenTest {
 
-  "parsing string containing valid week day value" - {
+  "parsing string containing valid week day value" in {
 
     "Saturday" should beToken(WeekDay(DayOfWeek.SATURDAY))
     "Thursday" should beToken(WeekDay(DayOfWeek.THURSDAY))
     "Fri" should beToken(WeekDay(DayOfWeek.FRIDAY))
   }
 
-  "parsing string containing invalid week day value" - {
+  "parsing string containing invalid week day value" in {
 
     "March" shouldNot beToken[WeekDay]
     "2017" shouldNot beToken[WeekDay]

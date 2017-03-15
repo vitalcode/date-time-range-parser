@@ -9,10 +9,8 @@ trait TokenLike {
 }
 
 trait TokenCompanion[T] {
-  def of(text: String, index: Int): Try[T]
+  def of(token: String, index: Int): Try[T]
 }
-
-final case class Day(value: Int, index: Int = 0) extends TokenLike
 
 final case class DateRange(from: LocalDate, to: LocalDate, index: Int) extends TokenLike
 

@@ -2,7 +2,7 @@ package uk.vitalcode.dateparser.token
 
 class MonthTest extends TokenTest {
 
-  "parsing string containing valid month value" - {
+  "parsing string containing valid month value" in {
 
     "January" should beToken(Month(1))
     "March" should beToken(Month(3))
@@ -12,7 +12,7 @@ class MonthTest extends TokenTest {
     "Nov" should beToken(Month(11))
   }
 
-  "parsing string containing invalid month value" - {
+  "parsing string containing invalid month value" in {
 
     "Sunday" shouldNot beToken[Month]
     "2017" shouldNot beToken[Month]

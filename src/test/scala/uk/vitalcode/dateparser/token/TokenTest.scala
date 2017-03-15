@@ -40,12 +40,14 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
     tokenMatcher.beToken(Some(right))
   }
 
-  implicit val yearTokenMatcher: TokenMatcher[Year] = CreateTokenMatcher[Year]("Year", text => Year.of(text, 0))
+  implicit val yearTokenMatcher: TokenMatcher[Year] = CreateTokenMatcher[Year]("Year", token => Year.of(token, 0))
 
-  implicit val timeTokenMatcher: TokenMatcher[Time] = CreateTokenMatcher[Time]("Time", text => Time.of(text, 0))
+  implicit val timeTokenMatcher: TokenMatcher[Time] = CreateTokenMatcher[Time]("Time", token => Time.of(token, 0))
 
-  implicit val monthTokenMatcher: TokenMatcher[Month] = CreateTokenMatcher[Month]("Month", text => Month.of(text, 0))
+  implicit val monthTokenMatcher: TokenMatcher[Month] = CreateTokenMatcher[Month]("Month", token => Month.of(token, 0))
 
-  implicit val weekDayTokenMatcher: TokenMatcher[WeekDay] = CreateTokenMatcher[WeekDay]("WeekDay", text => WeekDay.of(text, 0))
+  implicit val weekDayTokenMatcher: TokenMatcher[WeekDay] = CreateTokenMatcher[WeekDay]("WeekDay", token => WeekDay.of(token, 0))
+
+  implicit val dayTokenMatcher: TokenMatcher[Day] = CreateTokenMatcher[Day]("Day", token => Day.of(token, 0))
 }
 

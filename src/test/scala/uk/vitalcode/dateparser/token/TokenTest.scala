@@ -49,5 +49,7 @@ abstract class TokenTest extends FreeSpec with ShouldMatchers {
   implicit val weekDayTokenMatcher: TokenMatcher[WeekDay] = CreateTokenMatcher[WeekDay]("WeekDay", token => WeekDay.of(token, 0))
 
   implicit val dayTokenMatcher: TokenMatcher[Day] = CreateTokenMatcher[Day]("Day", token => Day.of(token, 0))
+
+  implicit val rangeTokenMatcher: TokenMatcher[Range] = CreateTokenMatcher[Range]("Range", token => Range.of(token, 0))
 }
 

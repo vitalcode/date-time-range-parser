@@ -1,6 +1,6 @@
 package uk.vitalcode.dateparser.token
 
-import java.time.{DayOfWeek, LocalDate, LocalTime}
+import java.time.{LocalDate, LocalTime}
 
 import scala.util.Try
 
@@ -24,8 +24,6 @@ object DateRange {
     )
   }
 }
-
-final case class Range(index: Int = 0) extends TokenLike
 
 final case class TimeRange(from: LocalTime, to: LocalTime, index: Int) extends TokenLike
 

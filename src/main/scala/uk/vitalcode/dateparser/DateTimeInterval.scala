@@ -2,8 +2,7 @@ package uk.vitalcode.dateparser
 
 import java.time.{LocalDate, LocalDateTime, LocalTime}
 
-import uk.vitalcode.dateparser.DateTimeInterval.defaultTime
-import uk.vitalcode.dateparser.token.TokenLike
+import uk.vitalcode.dateparser.token.DateToken
 
 case class DateTimeInterval(from: LocalDateTime, to: Option[LocalDateTime]) {
   def to(date: LocalDate, time: LocalTime): DateTimeInterval = copy(
@@ -29,13 +28,18 @@ object DateTimeInterval {
     to = None
   )
 
-  def of(dateTokens: List[TokenLike]): List[DateTimeInterval] = {
+  def of(dateTokens: List[DateToken]): List[DateTimeInterval] = {
     val indexedTokens = DateTokenAggregator.indexTokenList(dateTokens)
     val aggregatedTokens = aggregateTokens(indexedTokens)
     Analyser.analyse(aggregatedTokens)
   }
 
-  private def aggregateTokens(dateTokens: List[TokenLike]): List[TokenLike] = {
+  def of(text: String): List[DateTimeInterval] = {
+    val tokens = DateToken.parse(text)
+    of(tokens)
+  }
+
+  private def aggregateTokens(dateTokens: List[DateToken]): List[DateToken] = {
     val aggregatedTokens = DateTokenAggregator.aggregate(dateTokens)
     if (aggregatedTokens == dateTokens) aggregatedTokens
     else aggregateTokens(aggregatedTokens)

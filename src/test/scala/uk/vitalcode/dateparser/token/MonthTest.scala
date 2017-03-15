@@ -10,6 +10,7 @@ class MonthTest extends TokenTest {
     "Septemb" should beToken(Month(9))
     "Jun" should beToken(Month(6))
     "Nov" should beToken(Month(11))
+    "May" should beToken(Month(5))
   }
 
   "parsing string containing invalid month value" in {

@@ -2,7 +2,7 @@ package uk.vitalcode.dateparser.token
 
 import scala.util.Try
 
-final case class Range(index: Int = 0) extends TokenLike
+final case class Range(index: Int = 0) extends DateToken
 
 object Range extends TokenCompanion[Range] {
 

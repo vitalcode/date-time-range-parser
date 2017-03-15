@@ -53,7 +53,7 @@ class DateTimeIntervalTest extends FreeSpec with ShouldMatchers {
     }
   }
 
-  private def assert(testExpectations: (List[TokenLike], List[DateTimeInterval])) = {
+  private def assert(testExpectations: (List[DateToken], List[DateTimeInterval])) = {
     DateTimeInterval.of(testExpectations._1) shouldBe testExpectations._2
   }
 }

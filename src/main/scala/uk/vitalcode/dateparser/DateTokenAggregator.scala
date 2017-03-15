@@ -1,10 +1,10 @@
 package uk.vitalcode.dateparser
 
-import uk.vitalcode.dateparser.token.{Date, DateRange, Day, Month, Range, TimeRange, Time, TokenLike, WeekDay, Year}
+import uk.vitalcode.dateparser.token.{Date, DateRange, Day, Month, Range, TimeRange, Time, DateToken, WeekDay, Year}
 
 object DateTokenAggregator {
 
-  def indexTokenList(tokens: List[TokenLike]) = {
+  def indexTokenList(tokens: List[DateToken]) = {
     tokens.zipWithIndex.map {
       case (token: Day, index) => token.copy(index = index)
       case (token: Month, index) => token.copy(index = index)
@@ -18,7 +18,7 @@ object DateTokenAggregator {
     }
   }
 
-  def aggregate(list: List[TokenLike]): List[TokenLike] = {
+  def aggregate(list: List[DateToken]): List[DateToken] = {
     list match {
       case Day(d, i) :: Month(m, _) :: Year(y, _) :: tail if Date(y, m, d, i).isSuccess => Date(y, m, d, i).get :: aggregate(tail)
       case Month(m, i) :: Day(d, _) :: Year(y, _) :: tail if Date(y, m, d, i).isSuccess => Date(y, m, d, i).get :: aggregate(tail)

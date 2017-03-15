@@ -114,7 +114,7 @@ class AnalyserTest extends FreeSpec with ShouldMatchers {
     }
   }
 
-  private def assert(testExpectations: (List[TokenLike], List[DateTimeInterval])) = {
+  private def assert(testExpectations: (List[DateToken], List[DateTimeInterval])) = {
     analyse(indexTokenList(testExpectations._1)) shouldBe testExpectations._2
   }
 }

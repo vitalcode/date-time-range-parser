@@ -7,7 +7,7 @@ import uk.vitalcode.dateparser.token._
 
 case object Analyser {
 
-  def analyse(tokens: List[TokenLike]): List[DateTimeInterval] = {
+  def analyse(tokens: List[DateToken]): List[DateTimeInterval] = {
     (dates(tokens), dateRanges(tokens), weekDays(tokens), times(tokens), timeRanges(tokens)) match {
       case (_ , dateRange :: Nil, weekDays, Nil, Nil) => analyseDateRangeNoTimePatterns(dateRange, weekDays)
       case (_ , dateRange :: Nil, weekDays, times, Nil) => analyseDateRangeTimePatterns(dateRange, weekDays, times)
@@ -57,23 +57,23 @@ case object Analyser {
     })
   }
 
-  private def dates(dateTokens: List[TokenLike]) = dateTokens.collect {
+  private def dates(dateTokens: List[DateToken]) = dateTokens.collect {
     case d: Date => d
   }
 
-  private def dateRanges(dateTokens: List[TokenLike]) = dateTokens.collect {
+  private def dateRanges(dateTokens: List[DateToken]) = dateTokens.collect {
     case t: DateRange => t
   }
 
-  private def times(dateTokens: List[TokenLike]) = dateTokens.collect {
+  private def times(dateTokens: List[DateToken]) = dateTokens.collect {
     case t: Time => t
   }
 
-  private def timeRanges(dateTokens: List[TokenLike]) = dateTokens.collect {
+  private def timeRanges(dateTokens: List[DateToken]) = dateTokens.collect {
     case t: TimeRange => t
   }
 
-  private def weekDays(dateTokens: List[TokenLike]) = dateTokens.collect {
+  private def weekDays(dateTokens: List[DateToken]) = dateTokens.collect {
     case t: WeekDay => t.value
   }.toSet
 }

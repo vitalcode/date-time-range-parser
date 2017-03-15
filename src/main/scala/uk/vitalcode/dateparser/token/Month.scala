@@ -5,7 +5,7 @@ import java.util.Locale
 
 import scala.util.Try
 
-final case class Month(value: Int, index: Int = 0) extends TokenLike
+final case class Month(value: Int, index: Int = 0) extends DateToken
 
 object Month extends TokenCompanion[Month] {
 

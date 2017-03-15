@@ -6,7 +6,7 @@ import java.util.Locale
 
 import scala.util.Try
 
-final case class WeekDay(value: DayOfWeek, index: Int = 0) extends TokenLike
+final case class WeekDay(value: DayOfWeek, index: Int = 0) extends DateToken
 
 object WeekDay extends TokenCompanion[WeekDay] {
 

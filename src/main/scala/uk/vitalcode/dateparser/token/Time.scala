@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 
 import scala.util.Try
 
-final case class Time(value: LocalTime, index: Int = 0) extends TokenLike
+final case class Time(value: LocalTime, index: Int = 0) extends DateToken
 
 object Time extends TokenCompanion[Time] {
 

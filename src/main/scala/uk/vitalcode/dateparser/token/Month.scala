@@ -7,7 +7,7 @@ import scala.util.Try
 
 final case class Month(value: Int, index: Int = 0) extends TokenLike
 
-object Month {
+object Month extends TokenCompanion[Month] {
 
   private val months: Seq[String] = new DateFormatSymbols(Locale.UK).getMonths.map(m => m.toLowerCase())
 

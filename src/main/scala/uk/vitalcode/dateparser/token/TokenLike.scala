@@ -14,15 +14,6 @@ trait TokenCompanion[T] {
 
 final case class Day(value: Int, index: Int = 0) extends TokenLike
 
-final case class Date(value: LocalDate, index: Int) extends TokenLike
-
-object Date {
-
-  def apply(year: Int, month: Int, day: Int, index: Int = 0): Date = {
-    Date(LocalDate.of(year, month, day), index)
-  }
-}
-
 final case class DateRange(from: LocalDate, to: LocalDate, index: Int) extends TokenLike
 
 object DateRange {
@@ -50,5 +41,3 @@ object TimeRange {
     )
   }
 }
-
-final case class WeekDay(value: DayOfWeek, index: Int = 0) extends TokenLike

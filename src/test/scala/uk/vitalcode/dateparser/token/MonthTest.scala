@@ -16,6 +16,6 @@ class MonthTest extends TokenTest {
 
     "Sunday" shouldNot beToken[Month]
     "2017" shouldNot beToken[Month]
-    "3:00 PM" shouldNot beToken[Month]
+    "3:00PM" shouldNot beToken[Month]
   }
 }

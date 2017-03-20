@@ -47,4 +47,3 @@ class Examples extends FreeSpec with ShouldMatchers {
     }
   }
 }
-

@@ -1,7 +1,6 @@
 package uk.vitalcode.dateparser
 
-import java.time.{DayOfWeek, LocalDate}
-import scala.util.Try
+import java.time.{DayOfWeek, LocalDate, LocalDateTime}
 
 object DateTimeUtils {
 
@@ -12,4 +11,17 @@ object DateTimeUtils {
       datesInRange(from, to.minusDays(1), weekDays, newDates)
     }
   }
+
+  def getYear(month: Int, day: Int, dateTimeProvider: DateTimeProvider = new DefaultDateTimeProvider) = {
+    LocalDateTime.now().getYear
+  }
 }
+
+trait DateTimeProvider {
+  def now: LocalDateTime
+}
+
+class DefaultDateTimeProvider extends DateTimeProvider {
+  override def now: LocalDateTime = LocalDateTime.now
+}
+

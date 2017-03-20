@@ -7,8 +7,6 @@ import uk.vitalcode.dateparser.Analyser.analyse
 import uk.vitalcode.dateparser.DateTokenAggregator.indexTokenList
 import uk.vitalcode.dateparser.token._
 
-import scala.util.Try
-
 class AnalyserTest extends FreeSpec with ShouldMatchers {
 
   "Single date token" - {

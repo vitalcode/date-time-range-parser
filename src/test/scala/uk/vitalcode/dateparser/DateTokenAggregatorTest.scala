@@ -15,6 +15,12 @@ class DateTokenAggregatorTest extends FreeSpec with ShouldMatchers {
       assert((Month(6) :: Day(12) :: Year(2017) :: Nil) -> (Date(2017, 6, 12, 0).get :: Nil))
       assert((Month(6) :: Month(12) :: Day(12) :: Year(2017) :: Nil) -> (Month(6, 0) :: Date(2017, 12, 12, 1).get :: Nil))
     }
+    "[day = month] format" in {
+      assert((Day(12) :: Month(6) :: Nil) -> (Date(2017, 6, 12, 0).get :: Nil))
+    }
+    "[month = day] format" in {
+      assert((Month(6) :: Day(12) :: Nil) -> (Date(2017, 6, 12, 0).get :: Nil))
+    }
   }
 
   "extract date range tokens" in {

@@ -1,6 +1,8 @@
 package uk.vitalcode.dateparser
 
-import uk.vitalcode.dateparser.token.{Date, DateRange, Day, Month, Range, TimeRange, Time, DateToken, WeekDay, Year}
+import java.time.LocalDateTime
+
+import uk.vitalcode.dateparser.token.{Date, DateRange, DateToken, Day, Month, Range, Time, TimeRange, WeekDay, Year}
 
 object DateTokenAggregator {
 
@@ -19,9 +21,14 @@ object DateTokenAggregator {
   }
 
   def aggregate(list: List[DateToken]): List[DateToken] = {
+    val currentYear = LocalDateTime.now().getYear
     list match {
       case Day(d, i) :: Month(m, _) :: Year(y, _) :: tail if Date(y, m, d, i).isSuccess => Date(y, m, d, i).get :: aggregate(tail)
       case Month(m, i) :: Day(d, _) :: Year(y, _) :: tail if Date(y, m, d, i).isSuccess => Date(y, m, d, i).get :: aggregate(tail)
+
+      case Day(d, i) :: Month(m, _) :: tail if Date(currentYear, m, d, i).isSuccess => Date(currentYear, m, d, i).get :: aggregate(tail)
+      case Month(m, i) :: Day(d, _) :: tail if Date(currentYear, m, d, i).isSuccess => Date(currentYear, m, d, i).get :: aggregate(tail)
+
       case Time(from, i) :: Range(_) :: Time(to, _) :: tail => TimeRange(from, to, i) :: aggregate(tail)
       case Date(from, i) :: Range(_) :: Date(to, _) :: tail => DateRange(from, to, i) :: aggregate(tail)
       case Nil => Nil

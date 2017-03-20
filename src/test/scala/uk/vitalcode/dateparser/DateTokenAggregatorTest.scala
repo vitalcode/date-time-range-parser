@@ -28,6 +28,6 @@ class DateTokenAggregatorTest extends FreeSpec with Matchers {
   }
 
   private def assert(testExpectations: (List[DateToken], List[DateToken])) = {
-    aggregate(indexTokenList(testExpectations._1)) shouldBe testExpectations._2
+    aggregate(indexTokenList(testExpectations._1), new DefaultDateTimeProvider) shouldBe testExpectations._2
   }
 }

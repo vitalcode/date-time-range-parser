@@ -28,20 +28,20 @@ object DateTimeInterval {
     to = None
   )
 
-  def of(dateTokens: List[DateToken]): List[DateTimeInterval] = {
+  def of(dateTokens: List[DateToken], tp: DateTimeProvider): List[DateTimeInterval] = {
     val indexedTokens = DateTokenAggregator.indexTokenList(dateTokens)
-    val aggregatedTokens = aggregateTokens(indexedTokens)
+    val aggregatedTokens = aggregateTokens(indexedTokens, tp)
     Analyser.analyse(aggregatedTokens)
   }
 
-  def of(text: String): List[DateTimeInterval] = {
+  def of(text: String, tp: DateTimeProvider = new DefaultDateTimeProvider): List[DateTimeInterval] = {
     val tokens = DateToken.parse(text)
-    of(tokens)
+    of(tokens, tp)
   }
 
-  private def aggregateTokens(dateTokens: List[DateToken]): List[DateToken] = {
-    val aggregatedTokens = DateTokenAggregator.aggregate(dateTokens)
+  private def aggregateTokens(dateTokens: List[DateToken], timeProvider: DateTimeProvider): List[DateToken] = {
+    val aggregatedTokens = DateTokenAggregator.aggregate(dateTokens, timeProvider)
     if (aggregatedTokens == dateTokens) aggregatedTokens
-    else aggregateTokens(aggregatedTokens)
+    else aggregateTokens(aggregatedTokens, timeProvider)
   }
 }

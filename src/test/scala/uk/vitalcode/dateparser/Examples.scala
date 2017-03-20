@@ -2,16 +2,16 @@ package uk.vitalcode.dateparser
 
 import java.time.LocalDateTime
 
+import org.scalamock.scalatest.MockFactory
 import org.scalatest.matchers.{MatchResult, Matcher}
 import org.scalatest.{FreeSpec, _}
 
 
-class Examples extends FreeSpec with Matchers {
+class Examples extends FreeSpec with Matchers with MockFactory {
 
-  val year = LocalDateTime.now().getYear
+  private val currentDate = LocalDateTime.of(2017, 5, 6, 0, 0)
 
-  "should parse text into collection of date time intervals" in {
-
+  "should parse text as date time intervals" in {
     "6 May 2017" should parseAs(List(
       DateTimeInterval.from(2017, 5, 6)
     ))
@@ -29,16 +29,20 @@ class Examples extends FreeSpec with Matchers {
       DateTimeInterval.from(2017, 9, 10, 15, 0)
     ))
     "Fri 24 Jun 6:45pm (doors) | 11pm (curfew)" should parseAs(List(
-      DateTimeInterval.from(year, 6, 24, 18, 45).to(year, 6, 24, 23, 0)
+      DateTimeInterval.from(2017, 6, 24, 18, 45).to(2017, 6, 24, 23, 0)
     ))
-    "Fri 24 Jun 6:45pm (doors) | 11pm (curfew)" should parseAs(List(
-      DateTimeInterval.from(year, 6, 24, 18, 45).to(year, 6, 24, 23, 0)
+    "February, 23 17:25 - 18:05" should parseAs(List(
+      DateTimeInterval.from(2018, 2, 23, 17, 25).to(2018, 2, 23, 18, 5)
     ))
+  }
+
+  private val dateTimeProvider = new DateTimeProvider {
+    override def now: LocalDateTime = currentDate
   }
 
   private def parseAs(right: List[DateTimeInterval]): Matcher[String] = new Matcher[String] {
     def apply(left: String): MatchResult = {
-      val actual = DateTimeInterval.of(left)
+      val actual = DateTimeInterval.of(left, dateTimeProvider)
       MatchResult(
         actual == right,
         s"String [$left] results in [$actual] which is not the same as expected [$right]",

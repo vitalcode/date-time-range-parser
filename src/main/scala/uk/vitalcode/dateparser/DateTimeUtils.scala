@@ -12,8 +12,11 @@ object DateTimeUtils {
     }
   }
 
-  def getYear(month: Int, day: Int, dateTimeProvider: DateTimeProvider = new DefaultDateTimeProvider) = {
-    LocalDateTime.now().getYear
+  def getYearForNextMonthAndDay(month: Int, day: Int, currentTime: LocalDateTime = (new DefaultDateTimeProvider).now): Int = {
+    val currentMonth = currentTime.getMonth.getValue
+    val currentDay = currentTime.getDayOfMonth
+    if (currentMonth == month && currentDay == day) currentTime.getYear
+    else getYearForNextMonthAndDay(month, day, currentTime.plusDays(1))
   }
 }
 

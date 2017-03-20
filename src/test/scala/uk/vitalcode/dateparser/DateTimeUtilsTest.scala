@@ -72,9 +72,17 @@ class DateTimeUtilsTest extends FreeSpec with ShouldMatchers {
     }
   }
   "getYear util" - {
-    "should get correct next event year" in {
-      val currentYear = LocalDateTime.now.getYear
-      DateTimeUtils.getYear(5, 6) shouldBe currentYear
+    "when given month and year combination expected in the current year" - {
+      "should return current year" in {
+        val currentYear = LocalDateTime.now.getYear
+        DateTimeUtils.getYearForNextMonthAndDay(5, 6) shouldBe currentYear
+      }
+    }
+    "when given month and year combination expected in the next year" - {
+      "should return next year" in {
+        val nextYear = LocalDateTime.now.plusYears(1).getYear
+        DateTimeUtils.getYearForNextMonthAndDay(2, 15) shouldBe nextYear
+      }
     }
   }
 }

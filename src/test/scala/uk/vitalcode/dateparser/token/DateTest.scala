@@ -2,9 +2,9 @@ package uk.vitalcode.dateparser.token
 
 import java.time.LocalDate
 
-import org.scalatest.{FreeSpec, ShouldMatchers}
+import org.scalatest.{FreeSpec, Matchers}
 
-class DateTest extends FreeSpec with ShouldMatchers {
+class DateTest extends FreeSpec with Matchers {
 
   "should correctly initialise date token when provided valid year, month and day of the date" in {
     Date(2017, 5, 6, 10).get shouldBe Date(LocalDate.of(2017, 5, 6), 10)

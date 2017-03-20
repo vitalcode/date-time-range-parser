@@ -6,7 +6,7 @@ import org.scalatest.matchers.{MatchResult, Matcher}
 import org.scalatest.{FreeSpec, _}
 
 
-class Examples extends FreeSpec with ShouldMatchers {
+class Examples extends FreeSpec with Matchers {
 
   val year = LocalDateTime.now().getYear
 

@@ -4,10 +4,10 @@ version := "1.0"
 
 scalaVersion := "2.11.8"
 
-val shapelessVersion = "2.3.2"
-val scalaTestVersion = "2.2.5"
+val scalaTestVersion = "3.0.1"
+val scalaMockVersion = "3.5.0"
 
 libraryDependencies ++= Seq(
-  "com.chuusai" %% "shapeless" % shapelessVersion,
-  "org.scalatest" %% "scalatest" % scalaTestVersion
+  "org.scalatest" %% "scalatest" % scalaTestVersion,
+  "org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion
 )

@@ -2,10 +2,10 @@ package uk.vitalcode.dateparser.token
 
 import java.time.{DayOfWeek, LocalTime}
 
-import org.scalatest.{FreeSpec, ShouldMatchers}
+import org.scalatest.{FreeSpec, Matchers}
 import uk.vitalcode.dateparser.token.DateTokenTest.DateTokenParser
 
-class DateTokenTest extends FreeSpec with ShouldMatchers {
+class DateTokenTest extends FreeSpec with Matchers {
 
   "should parse text into corresponding date tokens" in {
 

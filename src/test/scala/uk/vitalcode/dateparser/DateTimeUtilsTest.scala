@@ -2,10 +2,11 @@ package uk.vitalcode.dateparser
 
 import java.time.{DayOfWeek, LocalDate, LocalDateTime}
 
+import org.scalamock.scalatest.MockFactory
 import org.scalatest._
 import uk.vitalcode.dateparser.DateTimeUtils.datesInRange
 
-class DateTimeUtilsTest extends FreeSpec with ShouldMatchers {
+class DateTimeUtilsTest extends FreeSpec with Matchers with MockFactory {
 
   "datesInRange util" - {
     "date range: [2016-01-01 to 2016-01-10]" - {
@@ -72,16 +73,24 @@ class DateTimeUtilsTest extends FreeSpec with ShouldMatchers {
     }
   }
   "getYear util" - {
+    val dateTimeProvider = mock[DateTimeProvider]
+
     "when given month and year combination expected in the current year" - {
       "should return current year" in {
-        val currentYear = LocalDateTime.now.getYear
-        DateTimeUtils.getYearForNextMonthAndDay(5, 6) shouldBe currentYear
+        (dateTimeProvider.now _).expects().returning(LocalDateTime.of(2017, 5, 6, 0, 0))
+        DateTimeUtils.getYearForNextMonthAndDay(6, 12, dateTimeProvider) shouldBe 2017
+      }
+    }
+    "when given month and year combination (today) expected in the current year" - {
+      "should return current year" in {
+        (dateTimeProvider.now _).expects().returning(LocalDateTime.of(2017, 5, 6, 0, 0))
+        DateTimeUtils.getYearForNextMonthAndDay(5, 6, dateTimeProvider) shouldBe 2017
       }
     }
     "when given month and year combination expected in the next year" - {
       "should return next year" in {
-        val nextYear = LocalDateTime.now.plusYears(1).getYear
-        DateTimeUtils.getYearForNextMonthAndDay(2, 15) shouldBe nextYear
+        (dateTimeProvider.now _).expects().returning(LocalDateTime.of(2017, 5, 6, 0, 0))
+        DateTimeUtils.getYearForNextMonthAndDay(2, 15, dateTimeProvider) shouldBe 2018
       }
     }
   }

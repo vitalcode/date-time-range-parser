@@ -3,7 +3,7 @@ package uk.vitalcode.dateparser
 import org.scalatest._
 import uk.vitalcode.dateparser.token._
 
-class DateTimeIntervalTest extends FreeSpec with ShouldMatchers {
+class DateTimeIntervalTest extends FreeSpec with Matchers {
 
   "parse data time tokens list as a list of date time intervals" - {
 

@@ -7,7 +7,7 @@ import uk.vitalcode.dateparser.Analyser.analyse
 import uk.vitalcode.dateparser.DateTokenAggregator.indexTokenList
 import uk.vitalcode.dateparser.token._
 
-class AnalyserTest extends FreeSpec with ShouldMatchers {
+class AnalyserTest extends FreeSpec with Matchers {
 
   "Single date token" - {
     "no either time nor time range token" in {

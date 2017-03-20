@@ -5,7 +5,7 @@ import org.scalatest.{FreeSpec, _}
 
 import scala.util.{Success, Try}
 
-abstract class TokenTest extends FreeSpec with ShouldMatchers {
+abstract class TokenTest extends FreeSpec with Matchers {
 
   trait TokenMatcher[Token] {
 

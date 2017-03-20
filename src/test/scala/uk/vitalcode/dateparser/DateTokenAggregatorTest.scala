@@ -4,7 +4,7 @@ import org.scalatest._
 import uk.vitalcode.dateparser.token.{Date, DateRange, Day, Month, Range, DateToken, Year}
 import uk.vitalcode.dateparser.DateTokenAggregator.{aggregate, indexTokenList}
 
-class DateTokenAggregatorTest extends FreeSpec with ShouldMatchers {
+class DateTokenAggregatorTest extends FreeSpec with Matchers {
 
   "extract date tokens" - {
     "[day = month = year] format" in {

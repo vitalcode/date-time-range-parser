@@ -3,7 +3,7 @@ package uk.vitalcode.dateparser
 import org.scalatest._
 import uk.vitalcode.dateparser.token.{Day, Month, Year}
 
-class Test extends FreeSpec with ShouldMatchers {
+class Test extends FreeSpec with Matchers {
 
 
   "Type matching with for-comprehension part 2" in {

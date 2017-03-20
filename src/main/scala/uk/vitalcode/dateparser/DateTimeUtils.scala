@@ -2,6 +2,8 @@ package uk.vitalcode.dateparser
 
 import java.time.{DayOfWeek, LocalDate, LocalDateTime}
 
+import scala.annotation.tailrec
+
 object DateTimeUtils {
 
   def datesInRange(from: LocalDate, to: LocalDate, weekDays: Set[DayOfWeek] = Set.empty, dates: List[LocalDate] = Nil): List[LocalDate] = {
@@ -12,14 +14,16 @@ object DateTimeUtils {
     }
   }
 
-  def getYearForNextMonthAndDay(month: Int, day: Int, currentTime: DateTimeProvider = new DefaultDateTimeProvider): Int = {
+  def getYearForNextMonthAndDay(month: Int, day: Int, currentTime: DateTimeProvider): Int = {
     getYearForNextMonthAndDay(month, day, currentTime.now)
   }
 
   private def getYearForNextMonthAndDay(month: Int, day: Int, currentTime: LocalDateTime): Int = {
     val currentMonth = currentTime.getMonth.getValue
     val currentDay = currentTime.getDayOfMonth
-    if (currentMonth == month && currentDay == day) currentTime.getYear
+    if (currentMonth == month && currentDay == day) {
+      currentTime.getYear
+    }
     else getYearForNextMonthAndDay(month, day, currentTime.plusDays(1))
   }
 }

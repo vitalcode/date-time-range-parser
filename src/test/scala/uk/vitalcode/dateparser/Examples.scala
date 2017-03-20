@@ -27,4 +27,11 @@ class Examples extends ExamplesSupport {
 
   "February, 23 17:25 - 18:05" in expected(
     DateTimeInterval.from(2018, 2, 23, 17, 25).to(2018, 2, 23, 18, 5))
+
+  "Date:Fri 08 Jul, Time:8pm" in expected(
+    DateTimeInterval.from(2017, 7, 8, 20, 0))
+
+  "Date:Sun 2 May Time:5.45pm" in expected(
+    DateTimeInterval.from(2018, 5, 2, 17, 45))
+
 }

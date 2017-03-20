@@ -11,6 +11,7 @@ trait DateToken {
 }
 
 object DateToken {
+
   def of(token: String, index: Int): Try[DateToken] = {
     val week = WeekDay.of(token, index)
     if (week.isSuccess) week
@@ -49,7 +50,8 @@ object DateToken {
         Nil
     })
     DateTokenAggregator.indexTokenList(dateTokens)
-  }}
+  }
+}
 
 trait TokenCompanion[T] {
   def of(token: String, index: Int): Try[T]

@@ -34,4 +34,23 @@ class Examples extends ExamplesSupport {
   "Date:Wed 2 May Time:5.45pm" in expected(
     DateTimeInterval.from(2018, 5, 2, 17, 45))
 
+  "Time:Sun 27 Nov" in expected(
+    DateTimeInterval.from(2017, 11, 27, 0, 0))
+
+  "(1 Jan 2017 - 3 Jan 2017) 11:00 13:00" in expected(
+    DateTimeInterval.from(2017, 1, 1, 11, 0).to(2017, 1, 1, 13, 0),
+    DateTimeInterval.from(2017, 1, 2, 11, 0).to(2017, 1, 2, 13, 0),
+    DateTimeInterval.from(2017, 1, 3, 11, 0).to(2017, 1, 3, 13, 0))
+
+  "(1 Jan 2017 - 3 Jan 2017) Tuesday 11:00 13:00" in expected(
+    DateTimeInterval.from(2017, 1, 3, 11, 0).to(2017, 1, 3, 13, 0))
+
+  "(1 Jan 2016 - 4 Jan 2016) Monday 11:00 13:00 Tuesday 14:00 15:00 Friday 16:05 17:20 Sunday 19:30 20:45" in expected(
+    DateTimeInterval.from(2016, 1, 1, 16, 5).to(2016, 1, 1, 17, 20),
+    DateTimeInterval.from(2016, 1, 3, 19, 30).to(2016, 1, 3, 20, 45),
+    DateTimeInterval.from(2016, 1, 4, 11, 0).to(2016, 1, 4, 13, 0))
+
+  "(3 Feb 2017) Friday 19:30 21:30" in expected(
+    DateTimeInterval.from(2017, 2, 3, 19, 30).to(2017, 2, 3, 21, 30))
 }
+

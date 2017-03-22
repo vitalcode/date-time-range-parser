@@ -9,12 +9,18 @@ case object Analyser {
 
   def analyse(tokens: List[DateToken]): List[DateTimeInterval] = {
     (dates(tokens), dateRanges(tokens), weekDays(tokens), times(tokens), timeRanges(tokens)) match {
-      case (_ , dateRange :: Nil, weekDays, Nil, Nil) => analyseDateRangeNoTimePatterns(dateRange, weekDays)
-      case (_ , dateRange :: Nil, weekDays, times, Nil) => analyseDateRangeTimePatterns(dateRange, weekDays, times)
-      case (_ , dateRange :: Nil, weekDays, _, timeRanges: List[TimeRange]) => analyseDateRangeTimeTimeRangesPatterns(dateRange, weekDays, timeRanges)
-      case (date :: Nil, _, _, Nil, Nil) => analyseSingleNoTimePatterns(date)
-      case (date :: Nil, _, _, times: List[Time], Nil) => analyseSingleDateTimePatterns(date, times)
-      case (date :: Nil, _, _, _, timeRanges: List[TimeRange]) => analyseSingleDateTimeRangesPatterns(date, timeRanges)
+      case (_ , dateRange :: Nil, weekDays, Nil, Nil) =>
+        analyseDateRangeNoTimePatterns(dateRange, weekDays)
+      case (_ , dateRange :: Nil, weekDays, times, Nil) =>
+        analyseDateRangeTimePatterns(dateRange, weekDays, times)
+      case (_ , dateRange :: Nil, weekDays, _, timeRanges: List[TimeRange]) =>
+        analyseDateRangeTimeTimeRangesPatterns(dateRange, weekDays, timeRanges)
+      case (date :: Nil, _, _, Nil, Nil) =>
+        analyseSingleNoTimePatterns(date)
+      case (date :: Nil, _, _, times: List[Time], Nil) =>
+        analyseSingleDateTimePatterns(date, times)
+      case (date :: Nil, _, _, _, timeRanges: List[TimeRange]) =>
+        analyseSingleDateTimeRangesPatterns(date, timeRanges)
       case _ => Nil
     }
   }
@@ -36,8 +42,10 @@ case object Analyser {
 
   private def analyseDateRangeTimeTimeRangesPatterns(dateRange: DateRange, weekDays: Set[DayOfWeek], timeRanges: List[TimeRange]) = {
     for {
-      localDate <- DateTimeUtils.datesInRange(dateRange.from, dateRange.to, weekDays)
-      timeRange <- timeRanges
+      localDate <- DateTimeUtils.datesInRange(dateRange.from, dateRange.to, weekDays ++ timeRanges.collect {
+        case TimeRange(_,_, Some(weekDay),_) => weekDay
+      })
+      timeRange <- timeRanges if timeRange.weekDay.isEmpty || timeRange.weekDay.get == localDate.getDayOfWeek
     } yield DateTimeInterval(
       LocalDateTime.of(localDate, timeRange.from),
       Some(LocalDateTime.of(localDate, timeRange.to))

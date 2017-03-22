@@ -98,6 +98,26 @@ class AnalyserTest extends FreeSpec with Matchers {
         )
       }
     }
+    "with single time range token filtered by weekday" in {
+      assert(
+        (DateRange((2017, 2, 12) -> (2017, 2, 28)) :: TimeRange((10, 35) -> (11, 45), DayOfWeek.TUESDAY) :: Nil) -> List(
+          DateTimeInterval.from(2017, 2, 14, 10, 35).to(2017, 2, 14, 11, 45),
+          DateTimeInterval.from(2017, 2, 21, 10, 35).to(2017, 2, 21, 11, 45),
+          DateTimeInterval.from(2017, 2, 28, 10, 35).to(2017, 2, 28, 11, 45)
+        )
+      )
+    }
+    "with multiple time range token filtered by weekday" in {
+      assert(
+        (DateRange((2017, 2, 12) -> (2017, 2, 28)) :: TimeRange((10, 35) -> (11, 45), DayOfWeek.TUESDAY) :: TimeRange((19, 15) -> (20, 55), DayOfWeek.FRIDAY) :: Nil) -> List(
+          DateTimeInterval.from(2017, 2, 14, 10, 35).to(2017, 2, 14, 11, 45),
+          DateTimeInterval.from(2017, 2, 17, 19, 15).to(2017, 2, 17, 20, 55),
+          DateTimeInterval.from(2017, 2, 21, 10, 35).to(2017, 2, 21, 11, 45),
+          DateTimeInterval.from(2017, 2, 24, 19, 15).to(2017, 2, 24, 20, 55),
+          DateTimeInterval.from(2017, 2, 28, 10, 35).to(2017, 2, 28, 11, 45)
+        )
+      )
+    }
   }
 
   "Date range token with " - {

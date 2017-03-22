@@ -5,13 +5,11 @@ import java.time.format.DateTimeFormatter
 
 import scala.util.Try
 
-final case class Time(value: LocalTime, index: Int = 0) extends DateToken
+final case class Time(value: LocalTime, index: Int) extends DateToken
 
 object Time extends TokenCompanion[Time] {
 
-  def apply(hours: Int, minutes: Int): Time = Time(LocalTime.of(hours, minutes))
-
-  def apply(hours: Int, minutes: Int, seconds: Int): Time = Time(LocalTime.of(hours, minutes, seconds))
+  def apply(hours: Int, minutes: Int, seconds: Int = 0, index: Int = 0): Time = Time(LocalTime.of(hours, minutes, seconds), index)
 
   private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern(""
     + "[h.m[.s]a]"

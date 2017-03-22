@@ -1,8 +1,6 @@
 package uk.vitalcode.dateparser.token
 
-import java.time.{LocalDate, LocalTime}
-
-import uk.vitalcode.dateparser.DateTokenAggregator
+import java.time.{DayOfWeek, LocalDate, LocalTime}
 
 import scala.util.{Failure, Success, Try}
 
@@ -43,13 +41,14 @@ object DateToken {
     val splitRegEx =
     """(?<![-])[\s]+(?![-]|PM|pm|AM|am)|(?=[-,])|(?<=[-,])""".r
 
-    val dateTokens = splitRegEx.split(text).toList.filter(_.nonEmpty).flatMap(token => DateToken.of(token, 0) match {
-      case Success(dateToken) =>
-        List(dateToken)
-      case _ =>
-        Nil
-    })
-    DateTokenAggregator.indexTokenList(dateTokens)
+    splitRegEx.split(text).toList.filter(_.nonEmpty).zipWithIndex.flatMap {
+      case (token, index) => DateToken.of(token, index) match {
+        case Success(dateToken) =>
+          List(dateToken)
+        case _ =>
+          Nil
+      }
+    }
   }
 }
 
@@ -79,15 +78,20 @@ object DateRange {
   }
 }
 
-final case class TimeRange(from: LocalTime, to: LocalTime, index: Int) extends DateToken
+final case class TimeRange(from: LocalTime, to: LocalTime, weekDay: Option[DayOfWeek], index: Int) extends DateToken
 
 object TimeRange {
-  def apply(range: ((Int, Int), (Int, Int)), index: Int = 0): TimeRange = {
+  def apply(range: ((Int, Int), (Int, Int)), weekDay: Option[DayOfWeek] = None, index: Int = 0): TimeRange = {
     val (from, to) = range
     TimeRange(
       LocalTime.of(from._1, from._2),
       LocalTime.of(to._1, to._2),
+      weekDay = weekDay,
       index
     )
+  }
+
+  def apply(range: ((Int, Int), (Int, Int)), weekDay: DayOfWeek): TimeRange = {
+    apply(range, Some(weekDay))
   }
 }

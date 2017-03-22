@@ -29,8 +29,7 @@ object DateTimeInterval {
   )
 
   def of(dateTokens: List[DateToken], tp: DateTimeProvider): List[DateTimeInterval] = {
-    val indexedTokens = DateTokenAggregator.indexTokenList(dateTokens)
-    val aggregatedTokens = aggregateTokens(indexedTokens, tp)
+    val aggregatedTokens = aggregateTokens(dateTokens, tp)
     Analyser.analyse(aggregatedTokens)
   }
 

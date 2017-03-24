@@ -1,8 +1,8 @@
 name := "date-time-range-parser"
 
-version := "1.0"
+version := "0.0.1"
 
-scalaVersion := "2.11.8"
+crossScalaVersions := Seq("2.10.6", "2.11.8", " 2.12.1")
 
 val scalaTestVersion = "3.0.1"
 val scalaMockVersion = "3.5.0"

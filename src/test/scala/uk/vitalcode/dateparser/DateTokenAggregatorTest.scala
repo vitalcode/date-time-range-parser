@@ -3,8 +3,8 @@ package uk.vitalcode.dateparser
 import java.time.{DayOfWeek, LocalDateTime}
 
 import org.scalatest._
-import uk.vitalcode.dateparser.token._
 import uk.vitalcode.dateparser.DateTokenAggregator.{aggregate, indexTokenList}
+import uk.vitalcode.dateparser.token._
 
 class DateTokenAggregatorTest extends FreeSpec with Matchers {
 
@@ -55,6 +55,12 @@ class DateTokenAggregatorTest extends FreeSpec with Matchers {
           assertNoIndex((WeekDay(DayOfWeek.SUNDAY, 0) :: Time(19, 30, 0, 1) :: Time(20, 45, 0, 3) :: Nil) -> (WeekDay(DayOfWeek.SUNDAY, 0) :: Time(19, 30, 0, 1) :: Time(20, 45, 0, 3) :: Nil))
         }
       }
+    }
+  }
+
+  "extract date time range tokens" - {
+    "single date and corresponding single time" in {
+      assert((Date(2017, 6, 12).get :: Time(20, 45) :: Nil) -> (DateTimeRange((2017, 6, 12), (20, 45), 0) :: Nil))
     }
   }
 

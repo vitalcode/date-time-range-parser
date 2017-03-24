@@ -1,7 +1,7 @@
 package uk.vitalcode.dateparser
 
 import uk.vitalcode.dateparser.DateTimeUtils.getYearForNextMonthAndDay
-import uk.vitalcode.dateparser.token.{Date, DateRange, DateToken, Day, Month, Range, Time, TimeRange, WeekDay, Year}
+import uk.vitalcode.dateparser.token.{Date, DateRange, DateTimeRange, DateToken, Day, Month, Range, Time, TimeRange, WeekDay, Year}
 
 object DateTokenAggregator {
 
@@ -33,6 +33,9 @@ object DateTokenAggregator {
       case WeekDay(wd, i) :: Time(from, fi) :: Time(to, ti) :: tail if ti - fi == 1=> TimeRange(from, to, Some(wd), i) :: aggregate(tail, tp)
 
       case Date(from, i) :: Range(_) :: Date(to, _) :: tail => DateRange(from, to, i) :: aggregate(tail, tp)
+
+      case Date(fd, i) :: Time(ft, _) :: tail => DateTimeRange(fd, None, ft, None, i) :: aggregate(tail, tp)
+
       case Nil => Nil
       case _ =>  list.head :: aggregate(list.tail, tp)
     }

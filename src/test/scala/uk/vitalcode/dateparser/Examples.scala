@@ -52,5 +52,10 @@ class Examples extends ExamplesSupport {
 
   "(3 Feb 2017) Friday 19:30 21:30" in expected(
     DateTimeInterval.from(2017, 2, 3, 19, 30).to(2017, 2, 3, 21, 30))
+
+  "Select date Tue 19 September 12:00pm Tue 19 September 2:00pm Tue 19 Sep 4:00pm (last few)" in expected(
+    DateTimeInterval.from(2017, 9, 19, 12, 0),
+    DateTimeInterval.from(2017, 9, 19, 14, 0),
+    DateTimeInterval.from(2017, 9, 19, 16, 0))
 }
 

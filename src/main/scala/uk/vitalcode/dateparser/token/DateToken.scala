@@ -95,3 +95,22 @@ object TimeRange {
     apply(range, Some(weekDay))
   }
 }
+
+final case class DateTimeRange(fromDate: LocalDate, toDate: Option[LocalDate], fromTime: LocalTime, toTime: Option[LocalTime], index: Int) extends DateToken
+
+object DateTimeRange {
+  def apply(dateRange: ((Int, Int, Int), Option[(Int, Int, Int)]), timeRange: ((Int, Int), Option[(Int, Int)]), index: Int = 0): DateTimeRange = {
+    val (fromDate, toDate) = dateRange
+    val (fromTime, toTime) = timeRange
+    DateTimeRange(
+      LocalDate.of(fromDate._1, fromDate._2, fromDate._3),
+      toDate.map(date => LocalDate.of(date._1, date._2, date._3)),
+      LocalTime.of(fromTime._1, fromTime._2),
+      toTime.map(time => LocalTime.of(time._1, time._2)),
+      index
+    )
+  }
+  def apply(fromDate: (Int, Int, Int), fromTime: (Int, Int), index: Int): DateTimeRange = {
+    apply((fromDate, None), (fromTime, None), index)
+  }
+}

@@ -11,8 +11,7 @@ branches:
 
 notifications:
   email:
-    - vitaliy.kuznetsov@baml.com
+    - vitaliy.kuznetsov@yahoo.co.uk
 
 jdk:
-  - oraclejdk7
   - oraclejdk8

@@ -16,7 +16,7 @@ object Month extends TokenCompanion[Month] {
   def of(token: String, index: Int): Try[Month] = Try {
     val tokenLowCase = token.toLowerCase()
     val monthsIndex = months.indexOf(tokenLowCase)
-    val shortMonthsIndex = shortMonths.find(m => tokenLowCase.contains(m)).fold(-1)(shortMonths.indexOf)
+    val shortMonthsIndex = shortMonths.find(m => tokenLowCase.contains(m)).fold(-1)(m => shortMonths.indexOf(m))
 
     if (monthsIndex != -1) Month(monthsIndex + 1, index)
     else if (shortMonthsIndex != -1) Month(shortMonthsIndex + 1, index)

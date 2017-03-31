@@ -2,8 +2,6 @@ name := "date-time-range-parser"
 
 organization := "uk.vitalcode"
 
-version := "0.0.1"
-
 crossScalaVersions := Seq("2.10.6", "2.11.8", " 2.12.1")
 
 val scalaTestVersion = "3.0.1"

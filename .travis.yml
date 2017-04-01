@@ -25,7 +25,7 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - '[[ $TRAVIS_BRANCH == "master" ]] && { sbt +publishSigned +sonatypeRelease; };'
+  - sbt +publishSigned +sonatypeRelease
 
 env:
   global:

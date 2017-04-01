@@ -56,9 +56,9 @@ pomExtra := <url>https://github.com/vitalcode/date-time-range-parser</url>
   </developers>
 
 // sbt-pgp
-pgpSecretRing := file("secring.gpg")
+pgpSecretRing := file("secring.asc")
 
-pgpPublicRing := file("pubring.gpg")
+pgpPublicRing := file("pubring.asc")
 
 pgpPassphrase := sys.env.get("PASS_PHRASE").map(_.toArray)
 

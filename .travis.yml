@@ -21,11 +21,10 @@ before_install:
   - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in pubring.gpg.enc -out local.pubring.gpg -d
 
 script:
-  - sbt clean coverage test coverageReport
+  - sbt clean coverage test coverageReport +publishSigned +sonatypeRelease
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - sbt +publishSigned +sonatypeRelease
 
 env:
   global:

@@ -1,8 +1,6 @@
 language: scala
 
 scala:
-  - 2.10.6
-  - 2.11.8
   - 2.12.1
 
 branches:
@@ -20,7 +18,7 @@ before_install:
   - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in secring.asc.enc -out secring.asc -d
   - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in pubring.asc.enc -out pubring.asc -d
 script:
-  - sbt clean coverage test coverageReport publishSigned sonatypeRelease
+  - sbt clean coverage +test coverageReport +publishSigned +sonatypeRelease
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

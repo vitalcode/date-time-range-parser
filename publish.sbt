@@ -41,10 +41,6 @@ pomExtra := <url>https://github.com/vitalcode/date-time-range-parser</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
-  <scm>
-    <url>git@github.com:vitalcode/date-time-range-parser.git</url>
-    <connection>scm:git:git@github.com:vitalcode/date-time-range-parser.git</connection>
-  </scm>
   <developers>
     <developer>
       <id>vitaliy</id>

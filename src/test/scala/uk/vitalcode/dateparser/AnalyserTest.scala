@@ -132,6 +132,32 @@ class AnalyserTest extends FreeSpec with Matchers {
     }
   }
 
+  "Date time ranges token when" - {
+    "date and time range defined" in {
+      assert(
+        (DateTimeRange((2017, 2, 12) -> None, (18, 35) -> Some(20, 45)) :: Nil) -> List(
+          DateTimeInterval.from(2017, 2, 12, 18, 35).to(2017, 2, 12, 20, 45)
+        )
+      )
+    }
+    "date and only from time defined" in {
+      assert(
+        (DateTimeRange((2017, 2, 12) -> None, (18, 35) -> None) :: Nil) -> List(
+          DateTimeInterval.from(2017, 2, 12, 18, 35)
+        )
+      )
+    }
+    "date range and only from time defined" in {
+      assert(
+        (DateTimeRange((2017, 2, 12) -> Some(2017, 2, 14), (18, 35) -> None) :: Nil) -> List(
+          DateTimeInterval.from(2017, 2, 12, 18, 35),
+          DateTimeInterval.from(2017, 2, 13, 18, 35),
+          DateTimeInterval.from(2017, 2, 14, 18, 35)
+        )
+      )
+    }
+  }
+
   private def assert(testExpectations: (List[DateToken], List[DateTimeInterval])) = {
     analyse(indexTokenList(testExpectations._1)) shouldBe testExpectations._2
   }

@@ -59,8 +59,13 @@ class DateTokenAggregatorTest extends FreeSpec with Matchers {
   }
 
   "extract date time range tokens" - {
-    "single date and corresponding single time" in {
-      assert((Date(2017, 6, 12).get :: Time(20, 45) :: Nil) -> (DateTimeRange((2017, 6, 12), (20, 45), 0) :: Nil))
+    "single date" - {
+      "single time" in {
+        assert((Date(2017, 6, 12).get :: Time(20, 45) :: Nil) -> (DateTimeRange((2017, 6, 12), (20, 45), 0) :: Nil))
+      }
+      "single time range" in {
+        assert((Date(2017, 6, 12).get :: TimeRange((19, 30) -> (20, 45)) :: Nil) -> (DateTimeRange((2017, 6, 12) -> None, (19, 30) -> Some(20, 45), 0) :: Nil))
+      }
     }
   }
 

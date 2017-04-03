@@ -57,5 +57,10 @@ class Examples extends ExamplesSupport {
     DateTimeInterval.from(2017, 9, 19, 12, 0),
     DateTimeInterval.from(2017, 9, 19, 14, 0),
     DateTimeInterval.from(2017, 9, 19, 16, 0))
+
+  "Select date Thu 15 September 7:45pm 8:50pm Fri 16 September 7:45pm - 20:45 Sat 17 October 7:45pm to 21:10" in expected(
+    DateTimeInterval.from(2017, 9, 15, 19, 45).to(2017, 9, 15, 20, 50),
+    DateTimeInterval.from(2017, 9, 16, 19, 45).to(2017, 9, 16, 20, 45),
+    DateTimeInterval.from(2017, 10, 17, 19, 45).to(2017, 10, 17, 21, 10))
 }
 

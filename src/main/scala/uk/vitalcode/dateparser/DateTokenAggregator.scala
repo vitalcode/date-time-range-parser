@@ -16,6 +16,7 @@ object DateTokenAggregator {
       case (token: Range, index) => token.copy(index = index)
       case (token: TimeRange, index) => token.copy(index = index)
       case (token: WeekDay, index) => token.copy(index = index)
+      case (token: DateTimeRange, index) => token.copy(index = index)
     }
   }
 
@@ -35,6 +36,7 @@ object DateTokenAggregator {
       case Date(from, i) :: Range(_) :: Date(to, _) :: tail => DateRange(from, to, i) :: aggregate(tail, tp)
 
       case Date(fd, i) :: Time(ft, _) :: tail => DateTimeRange(fd, None, ft, None, i) :: aggregate(tail, tp)
+      case Date(fd, i) :: TimeRange(ft, tt, _, _) :: tail => DateTimeRange(fd, None, ft, Some(tt), i) :: aggregate(tail, tp)
 
       case Nil => Nil
       case _ =>  list.head :: aggregate(list.tail, tp)

@@ -77,10 +77,19 @@ case object Analyser {
   }
 
   private def analyseDateTimeRangesNoTimePatterns(dateTimeRanges: List[DateTimeRange]): List[DateTimeInterval] = {
-    dateTimeRanges.map {
-      case DateTimeRange(fromDate, None, fromTime, _, _) => DateTimeInterval.from(fromDate, fromTime)
-      case DateTimeRange(fromDate, Some(toDate), fromTime, None, _) => DateTimeInterval.from(fromDate, fromTime).to(toDate, LocalTime.of(0, 0))
-      case DateTimeRange(fromDate, Some(toDate), fromTime, Some(toTime), _) => DateTimeInterval.from(fromDate, fromTime).to(toDate, toTime)
+    dateTimeRanges.flatMap {
+      case DateTimeRange(fromDate, None, fromTime, Some(toTime), _) =>
+        List(DateTimeInterval.from(fromDate, fromTime).to(fromDate, toTime))
+      case DateTimeRange(fromDate, None, fromTime, _, _) =>
+        List(DateTimeInterval.from(fromDate, fromTime))
+      case DateTimeRange(fromDate, Some(toDate), fromTime, None, _) =>
+        for {
+          localDate <- DateTimeUtils.datesInRange(fromDate, toDate)
+        } yield DateTimeInterval.from(localDate, fromTime)
+      case DateTimeRange(fromDate, Some(toDate), fromTime, Some(toTime), _) =>
+        for {
+          localDate <- DateTimeUtils.datesInRange(fromDate, toDate)
+        } yield DateTimeInterval.from(localDate, fromTime).to(localDate, toTime)
     }
   }
 

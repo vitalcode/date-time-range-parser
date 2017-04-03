@@ -4,7 +4,9 @@
 [![Codecov branch](https://img.shields.io/codecov/c/github/vitalcode/date-time-range-parser/master.svg)](http://codecov.io/github/vitalcode/date-time-range-parser?branch=master)
 [![Maven Central](https://img.shields.io/maven-central/v/uk.vitalcode/date-time-range-parser_2.12.svg)](https://maven-badges.herokuapp.com/maven-central/uk.vitalcode/date-time-range-parser_2.12)
 
-Human style date time range parser
+Date Time Range Parser is a natural language events date time interval parser written in Scala.
+
+It was designed to understand multiple way of defining events occurrence date time intervals from human style events text description that you usually get when crawling event provider web sites.
 
 ## Using
 

@@ -1,5 +1,6 @@
 package uk.vitalcode.dateparser
 
+import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalDateTime, LocalTime}
 
 import uk.vitalcode.dateparser.token.DateToken
@@ -12,6 +13,10 @@ case class DateTimeInterval(from: LocalDateTime, to: Option[LocalDateTime]) {
   def to(year: Int, month: Int, day: Int, hours: Int = 0, minutes: Int = 0): DateTimeInterval = copy(
     to = Some(LocalDateTime.of(year, month, day, hours, minutes))
   )
+
+  private def formatDate(date: LocalDateTime) = date.format(DateTimeFormatter.ISO_DATE_TIME)
+
+  override def toString: String = s"interval[from: ${formatDate(from)}" + to.map(d => s" to: ${formatDate(d)}").getOrElse("") + "]"
 }
 
 object DateTimeInterval {

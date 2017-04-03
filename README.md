@@ -6,7 +6,7 @@
 
 Date Time Range Parser is a natural language events date time interval parser written in Scala.
 
-It was designed to understand multiple way of defining events occurrence date time intervals from human style events text description that you usually get when crawling event provider web sites.
+It was designed to understand multiple ways of defining events occurrence from human style events text description that you usually get when crawling event provider web sites.
 
 ## Using
 
